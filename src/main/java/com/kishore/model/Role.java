@@ -1,5 +1,7 @@
 package com.kishore.model;
 
+import com.sun.istack.NotNull;
+
 import javax.persistence.*;
 
 @Entity
@@ -38,5 +40,6 @@ public class Role {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
+    @NotNull
     private String name;
 }

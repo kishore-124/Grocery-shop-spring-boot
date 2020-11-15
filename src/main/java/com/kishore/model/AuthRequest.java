@@ -1,8 +1,5 @@
 package com.kishore.model;
 
-import javax.persistence.Entity;
-
-
 public class AuthRequest {
     public String getUserName() {
         return userName;

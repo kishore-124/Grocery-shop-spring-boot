@@ -1,5 +1,8 @@
 package com.kishore.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.sun.istack.NotNull;
+
 import javax.persistence.*;
 import java.io.IOException;
 import java.io.InputStream;
@@ -17,6 +20,17 @@ public class User extends InputStream {
     }
 
     @OneToOne(cascade = {CascadeType.ALL})
+    private Wallet wallet;
+
+    public Wallet getWallet() {
+        return wallet;
+    }
+
+    public void setWallet(Wallet wallet) {
+        this.wallet = wallet;
+    }
+
+    @OneToOne(cascade = {CascadeType.ALL})
     private Role role;
 
     public User() {
@@ -28,7 +42,8 @@ public class User extends InputStream {
         return 0;
     }
 
-    public User(Role role, int id, String email, String userName, String password, String phone_number, byte[] data) {
+    public User(Wallet wallet, Role role, int id, String email, String userName, String password, String phone_number, byte[] data, List<Order> orders, Cart cart) {
+        this.wallet = wallet;
         this.role = role;
         this.id = id;
         this.email = email;
@@ -36,6 +51,8 @@ public class User extends InputStream {
         this.password = password;
         this.phone_number = phone_number;
         this.data = data;
+        this.orders = orders;
+        this.cart = cart;
     }
 
     public Role getRole() {
@@ -44,6 +61,14 @@ public class User extends InputStream {
 
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    public List<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
     }
 
     public String getEmail() {
@@ -67,8 +92,12 @@ public class User extends InputStream {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
+
+    @NotNull
     private String email;
 
+    @NotNull
+    @Column(unique = true)
     private String userName;
 
     public byte[] getData() {
@@ -87,6 +116,7 @@ public class User extends InputStream {
         this.userName = userName;
     }
 
+    @NotNull
     private String password;
 
     public String getPhone_number() {
@@ -97,6 +127,25 @@ public class User extends InputStream {
         this.phone_number = phone_number;
     }
 
+    @NotNull
     private String phone_number;
+
     private byte[] data;
+
+    public Cart getCart() {
+        return cart;
+    }
+
+    public void setCart(Cart cart) {
+        this.cart = cart;
+    }
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "user")
+    private List<Order> orders;
+
+
+
+    @OneToOne
+    private Cart cart;
 }

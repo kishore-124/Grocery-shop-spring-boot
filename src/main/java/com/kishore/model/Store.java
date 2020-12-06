@@ -55,12 +55,14 @@ public class Store {
 
     private String contact_number;
 
-    public Store(int id, String name, String email, String contact_number, List<Product> products) {
+    public Store(int id, String name, String email, String contact_number, List<Product> products, Date created_at, Date updated_at) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.contact_number = contact_number;
         this.products = products;
+        this.created_at = created_at;
+        this.updated_at = updated_at;
     }
 
     public List<Product> getProducts() {
@@ -74,4 +76,24 @@ public class Store {
     @JsonIgnore
     @OneToMany(mappedBy = "store")
     private List<Product> products = new ArrayList<Product>();
+
+    private Date created_at;
+
+    public Date getCreated_at() {
+        return created_at;
+    }
+
+    public void setCreated_at(Date created_at) {
+        this.created_at = created_at;
+    }
+
+    public Date getUpdated_at() {
+        return updated_at;
+    }
+
+    public void setUpdated_at(Date updated_at) {
+        this.updated_at = updated_at;
+    }
+
+    private Date updated_at;
 }

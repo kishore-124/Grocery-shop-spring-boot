@@ -1,15 +1,13 @@
 package com.kishore.controller;
 
 import com.kishore.dao.StoreRepository;
-import com.kishore.model.Product;
+import com.kishore.exception.RecordNotFound;
 import com.kishore.model.Store;
 import com.kishore.service.StoreService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
@@ -24,6 +22,8 @@ public class StoreController {
 
     @PostMapping(value = "/store")
     public  String addStore(@RequestBody Store store) {
+        store.setCreated_at(new Date());
+        store.setUpdated_at(new Date());
         storeRepository.save(store);
         return "store successfully added";
     }
@@ -35,15 +35,22 @@ public class StoreController {
     }
 
     @GetMapping("/store/{id}")
-    public Store FindById(@PathVariable int id)
+    public ResponseEntity<Store> FindById(@PathVariable int id) throws RecordNotFound
     {
-        return storeService.getStore(id);
+        Store store = storeService.getStore(id);
+
+        if(store == null)
+        {
+            throw new RecordNotFound("Record Not Found");
+        }
+
+        return ResponseEntity.ok().body(store);
     }
 
     @PutMapping("/store/{id}")
     public String updateStore(@RequestBody Store store,@PathVariable int id)
     {
-        storeService.updateStore(store,id);
+        storeService.updateStore(store, id);
         return "store updated successfully";
     }
 

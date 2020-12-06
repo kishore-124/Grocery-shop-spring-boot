@@ -1,7 +1,7 @@
 package com.kishore.model;
 
 import com.sun.istack.NotNull;
-
+import java.util.*;
 import javax.persistence.*;
 import javax.persistence.GenerationType;
 
@@ -16,13 +16,15 @@ public class Wallet {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-    public Wallet(int id, Float totalAmount, Float amountAvailable, Float amountEntered, Float amountUsed, String currency) {
+    public Wallet(int id, Float totalAmount, Float amountAvailable, Float amountEntered, Float amountUsed, String currency, Date created_at, Date updated_at) {
         this.id = id;
         this.totalAmount = totalAmount;
         this.amountAvailable = amountAvailable;
         this.amountEntered = amountEntered;
         this.amountUsed = amountUsed;
         this.currency = currency;
+        this.created_at = created_at;
+        this.updated_at = updated_at;
     }
 
     public int getId() {
@@ -86,4 +88,24 @@ public class Wallet {
 
     @NotNull
     private String currency;
+
+    private Date created_at;
+
+    public Date getCreated_at() {
+        return created_at;
+    }
+
+    public void setCreated_at(Date created_at) {
+        this.created_at = created_at;
+    }
+
+    public Date getUpdated_at() {
+        return updated_at;
+    }
+
+    public void setUpdated_at(Date updated_at) {
+        this.updated_at = updated_at;
+    }
+
+    private Date updated_at;
 }

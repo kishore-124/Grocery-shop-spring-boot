@@ -19,7 +19,7 @@ public class User extends InputStream {
         this.id = id;
     }
 
-    @OneToOne(cascade = {CascadeType.ALL})
+    @OneToOne(cascade = {CascadeType.MERGE})
     private Wallet wallet;
 
     public Wallet getWallet() {
@@ -30,28 +30,36 @@ public class User extends InputStream {
         this.wallet = wallet;
     }
 
-    @OneToOne(cascade = {CascadeType.ALL})
+    @OneToOne(cascade = {CascadeType.MERGE})
     private Role role;
+
 
     public User() {
 
     }
+
+    private Date Create_at;
+
+    private Date updated_at;
+
 
     @Override
     public int read() throws IOException {
         return 0;
     }
 
-    public User(Wallet wallet, Role role, int id, String email, String userName, String password, String phone_number, byte[] data, List<Order> orders, Cart cart) {
+    public User(Wallet wallet, Role role, Date create_at, Date updated_at, int id, String email, String userName, String password, String phone_number, List<Order> orders, List<Address> addresses, Cart cart) {
         this.wallet = wallet;
         this.role = role;
+        Create_at = create_at;
+        this.updated_at = updated_at;
         this.id = id;
         this.email = email;
         this.userName = userName;
         this.password = password;
         this.phone_number = phone_number;
-        this.data = data;
         this.orders = orders;
+        this.addresses = addresses;
         this.cart = cart;
     }
 
@@ -100,14 +108,6 @@ public class User extends InputStream {
     @Column(unique = true)
     private String userName;
 
-    public byte[] getData() {
-        return data;
-    }
-
-    public void setData(byte[] data) {
-        this.data = data;
-    }
-
     public String getUserName() {
         return userName;
     }
@@ -130,8 +130,6 @@ public class User extends InputStream {
     @NotNull
     private String phone_number;
 
-    private byte[] data;
-
     public Cart getCart() {
         return cart;
     }
@@ -140,11 +138,37 @@ public class User extends InputStream {
         this.cart = cart;
     }
 
+    public Date getCreate_at() {
+        return Create_at;
+    }
+
+    public void setCreate_at(Date create_at) {
+        Create_at = create_at;
+    }
+
+    public Date getUpdated_at() {
+        return updated_at;
+    }
+
+    public void setUpdated_at(Date updated_at) {
+        this.updated_at = updated_at;
+    }
+
     @JsonIgnore
     @OneToMany(mappedBy = "user")
     private List<Order> orders;
 
+    public List<Address> getAddresses() {
+        return addresses;
+    }
 
+    public void setAddresses(List<Address> addresses) {
+        this.addresses = addresses;
+    }
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "user")
+    private List<Address> addresses;
 
     @OneToOne
     private Cart cart;

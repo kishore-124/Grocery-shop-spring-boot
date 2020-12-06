@@ -33,6 +33,8 @@ public class MyUserDetailsService implements UserDetailsService {
     public void save(User user)
     {
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        user.setCreate_at(new Date());
+        user.setUpdated_at(new Date());
         userRepository.save(user);
 
     }
@@ -47,12 +49,5 @@ public class MyUserDetailsService implements UserDetailsService {
         return new org.springframework.security.core.userdetails.User(user.getUserName(), user.getPassword(),
                 grantedAuthorities);
     }
-
-//    private static Collection<? extends GrantedAuthority> getAuthorities(User user) {
-//
-//        String[] userRoles = user.getRole().stream().map((role) -> "ROLE_"+role.getName()).toArray(String[]::new);
-//        Collection<GrantedAuthority> authorities = AuthorityUtils.createAuthorityList(userRoles);
-//        return authorities;
-//    }
 
 }

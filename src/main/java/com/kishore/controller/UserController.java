@@ -1,7 +1,9 @@
 package com.kishore.controller;
 
 
+import com.kishore.dao.RoleRepository;
 import com.kishore.dao.UserRepository;
+import com.kishore.exception.RecordNotFound;
 import com.kishore.model.AuthRequest;
 import com.kishore.model.Role;
 import com.kishore.model.User;
@@ -13,16 +15,18 @@ import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.JobParametersBuilder;
 import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.io.IOException;
-
 
 @RestController
+@Validated
 public class UserController {
+
+    @Autowired
+    private RoleRepository roleRepository;
 
     @Autowired
     JobLauncher jobLauncher;
@@ -43,15 +47,11 @@ public class UserController {
     private MyUserDetailsService myUserDetailsService;
 
     @PostMapping("/register")
-    public String saveUser( @RequestBody User user) throws Exception {
+    public String saveUser(@RequestBody User user) throws Exception {
         Wallet wallet = new Wallet();
-        Role role = new Role();
-        role.setName("User");
+        Role role = roleRepository.findByName("User");
         user.setRole(role);
-        wallet.setAmountEntered(10.0f);
-        wallet.setAmountAvailable(10.0f);
-        wallet.setCurrency("INR");
-        user.setWallet(wallet);
+
         myUserDetailsService.save(user);
         run(user);
         return "user saved";
@@ -68,18 +68,15 @@ public class UserController {
     }
 
     @GetMapping("/user")
-    public User getUser(@RequestParam("username") String userName) throws IOException {
+    public ResponseEntity<User> getUser(@RequestParam("username") String userName) throws RecordNotFound {
         User user = userRepository.findByUserName(userName);
-        return user;
+        if(user==null)
+        {
+            throw new RecordNotFound("Record Not Found");
+        }
+        return ResponseEntity.ok().body(user);
     }
 
-    @PutMapping(value = "/user/{id}", consumes = {"multipart/form-data"})
-    public String updateUser(@RequestParam("file") MultipartFile file, @PathVariable int id) throws IOException {
-        User user = userRepository.findById(id).orElse(null);
-        user.setData(file.getBytes());
-        userRepository.save(user);
-        return "user updated successfully";
-    }
 
     @PostMapping("/authenticate")
     public String generateToken(@RequestBody AuthRequest authRequest) throws Exception {

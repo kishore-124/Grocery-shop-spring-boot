@@ -1,8 +1,8 @@
 package com.kishore.model;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+
 
 
 @Entity
@@ -28,11 +28,32 @@ public class Cart {
         return id;
     }
 
-    public Cart(int id, Product product, int cart_quantity) {
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public Date getCreated_at() {
+        return created_at;
+    }
+
+    public Cart(int id, Product product, int cart_quantity, Date created_at, Date updated_at) {
         this.id = id;
         this.product = product;
         this.cart_quantity = cart_quantity;
+        this.created_at = created_at;
+        this.updated_at = updated_at;
+    }
 
+    public void setCreated_at(Date created_at) {
+        this.created_at = created_at;
+    }
+
+    public Date getUpdated_at() {
+        return updated_at;
+    }
+
+    public void setUpdated_at(Date updated_at) {
+        this.updated_at = updated_at;
     }
 
     public Product getProduct() {
@@ -52,5 +73,9 @@ public class Cart {
     }
 
     private int cart_quantity;
+
+    private Date created_at;
+
+    private Date updated_at;
 }
 

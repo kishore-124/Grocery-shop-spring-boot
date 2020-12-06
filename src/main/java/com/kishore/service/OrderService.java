@@ -5,6 +5,7 @@ import com.kishore.model.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -15,6 +16,8 @@ public class OrderService {
 
     public void saveOrder(Order order)
     {
+        order.setCreated_at(new Date());
+        order.setUpdated_at(new Date());
         orderRepository.save(order);
     }
 
@@ -43,6 +46,7 @@ public class OrderService {
         exists.setStatus(order.getStatus());
         exists.setOrder_no(order.getOrder_no());
         exists.setOrder_date(order.getOrder_date());
+        exists.setUpdated_at(new Date());
         return  orderRepository.save(exists);
     }
 }

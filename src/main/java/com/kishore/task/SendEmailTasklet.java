@@ -10,6 +10,7 @@ import org.springframework.batch.core.step.tasklet.Tasklet;
 import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
+import redis.clients.jedis.Jedis;
 
 import java.io.IOException;
 
@@ -23,14 +24,18 @@ public class SendEmailTasklet implements Tasklet {
 
     @Override
     public RepeatStatus execute(StepContribution stepContribution, ChunkContext chunkContext) throws Exception {
+
+        Jedis jedis = new Jedis();
+        jedis.rpush("email", "first");
+
     String userName = chunkContext.getStepContext().getStepExecution().getJobParameters().getString("userName");
         String email = chunkContext.getStepContext().getStepExecution().getJobParameters().getString("email");
         Email from = new Email("gopalakrishnankishore510@gmail.com");
         String subject = "User registration mail";
         Email to = new Email(email);
-        Content content = new Content("text/plain", "welcome  "+ userName);
+        Content content = new Content("text/html", "welcome  "+ userName);
         Mail mail = new Mail(from, subject, to, content);
-        SendGrid sg = new SendGrid("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");
+        SendGrid sg = new SendGrid("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");
         Request request = new Request();
 
         try {

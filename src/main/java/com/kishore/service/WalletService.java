@@ -5,6 +5,7 @@ import com.kishore.model.Wallet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -18,6 +19,8 @@ public class WalletService {
         wallet.setTotalAmount(wallet.getAmountEntered());
         wallet.setAmountAvailable(wallet.getAmountEntered());
         wallet.setAmountUsed(0.0f);
+        wallet.setCreated_at(new Date());
+        wallet.setUpdated_at(new Date());
         walletRepository.save(wallet);
     }
 
@@ -40,6 +43,7 @@ public class WalletService {
         exists.setAmountAvailable(amount_available);
         exists.setAmountEntered(wallet.getAmountEntered());
         exists.setTotalAmount(total_amount);
+        exists.setUpdated_at(new Date());
         return  walletRepository.save(exists);
     }
 

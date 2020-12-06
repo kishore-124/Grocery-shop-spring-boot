@@ -19,7 +19,8 @@ public class Order {
 
     }
 
-    public Order(int id, Date delivery_date_time, String order_no, Date order_date, float amount, String status, String delivery_mode, User user, List<Product> product) {
+
+    public Order(int id, Date delivery_date_time, String order_no, Date order_date, float amount, String status, String delivery_mode, User user, List<Product> product, Date created_at, Date updated_at) {
         this.id = id;
         this.delivery_date_time = delivery_date_time;
         this.order_no = order_no;
@@ -29,6 +30,8 @@ public class Order {
         this.delivery_mode = delivery_mode;
         this.user = user;
         this.product = product;
+        this.created_at = created_at;
+        this.updated_at = updated_at;
     }
 
     public int getId() {
@@ -121,4 +124,24 @@ public class Order {
     @JsonIgnore
     @ManyToMany(mappedBy = "order")
     private List<Product> product = new ArrayList<Product>();
+
+    public Date getCreated_at() {
+        return created_at;
+    }
+
+    public void setCreated_at(Date created_at) {
+        this.created_at = created_at;
+    }
+
+    public Date getUpdated_at() {
+        return updated_at;
+    }
+
+    public void setUpdated_at(Date updated_at) {
+        this.updated_at = updated_at;
+    }
+
+    private Date created_at;
+
+    private Date updated_at;
 }

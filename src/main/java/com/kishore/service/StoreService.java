@@ -6,6 +6,8 @@ import com.kishore.model.Store;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+
 @Service
 public class StoreService {
 
@@ -28,6 +30,7 @@ public class StoreService {
         exists.setName(store.getName());
         exists.setEmail(store.getEmail());
         exists.setContact_number(store.getContact_number());
+        exists.setUpdated_at(new Date());
         return  storeRepository.save(exists);
     }
 }

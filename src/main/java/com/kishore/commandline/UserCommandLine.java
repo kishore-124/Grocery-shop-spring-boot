@@ -6,6 +6,7 @@ import org.springframework.batch.core.*;
 import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 import java.util.*;
 
@@ -24,6 +25,9 @@ public class UserCommandLine implements CommandLineRunner {
     @Autowired
     private RoleRepository roleRepository;
 
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
+
     @Override
     public void run(String... args) throws Exception {
      User user_check = userRepository.findByUserName("kishore");
@@ -32,7 +36,7 @@ public class UserCommandLine implements CommandLineRunner {
          Role role = roleRepository.findByName("Admin");
          User user = new User();
          user.setUserName("kishore");
-         user.setPassword("9047446861");
+         user.setPassword(bCryptPasswordEncoder.encode("9047446861"));
          user.setEmail("kishorekce124@gmail.com");
          user.setPhone_number("7010950016");
          user.setCreate_at(new Date());

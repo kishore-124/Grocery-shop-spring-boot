@@ -48,7 +48,7 @@ public class User extends InputStream {
         return 0;
     }
 
-    public User(Wallet wallet, Role role, Date create_at, Date updated_at, int id, String email, String userName, String password, String phone_number, List<Order> orders, List<Address> addresses, Cart cart) {
+    public User(Wallet wallet, Role role, Date create_at, Date updated_at, int id, String email, String userName, String password, String phone_number, List<Order> orders, List<Address> addresses, Cart cart, String reset_password_token) {
         this.wallet = wallet;
         this.role = role;
         Create_at = create_at;
@@ -61,6 +61,7 @@ public class User extends InputStream {
         this.orders = orders;
         this.addresses = addresses;
         this.cart = cart;
+        this.reset_password_token = reset_password_token;
     }
 
     public Role getRole() {
@@ -102,6 +103,7 @@ public class User extends InputStream {
 
 
     @NotNull
+    @Column(unique = true)
     private String email;
 
     @NotNull
@@ -128,6 +130,7 @@ public class User extends InputStream {
     }
 
     @NotNull
+    @Column(unique = true)
     private String phone_number;
 
     public Cart getCart() {
@@ -172,4 +175,14 @@ public class User extends InputStream {
 
     @OneToOne
     private Cart cart;
+
+    public String getReset_password_token() {
+        return reset_password_token;
+    }
+
+    public void setReset_password_token(String reset_password_token) {
+        this.reset_password_token = reset_password_token;
+    }
+
+    private String reset_password_token;
 }

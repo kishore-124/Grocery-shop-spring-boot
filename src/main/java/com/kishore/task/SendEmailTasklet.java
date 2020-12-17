@@ -31,9 +31,9 @@ public class SendEmailTasklet implements Tasklet {
     String userName = chunkContext.getStepContext().getStepExecution().getJobParameters().getString("userName");
         String email = chunkContext.getStepContext().getStepExecution().getJobParameters().getString("email");
         Email from = new Email("gopalakrishnankishore510@gmail.com");
-        String subject = "User registration mail";
+        String subject = "Welcome"+ userName;
         Email to = new Email(email);
-        Content content = new Content("text/html", "welcome  "+ userName);
+        Content content = new Content("text/html", default_email_template(userName));
         Mail mail = new Mail(from, subject, to, content);
         SendGrid sg = new SendGrid("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");
         Request request = new Request();
@@ -47,5 +47,11 @@ public class SendEmailTasklet implements Tasklet {
             System.out.println(ex);
         }
         return RepeatStatus.FINISHED;
+    }
+
+    public String default_email_template(String username)
+    {
+        String html_content = "<html><body>Hi "+ username + "<br>Your are just joined our online shop, we will provide you a best shopping experience.</body></html>";
+        return html_content;
     }
 }

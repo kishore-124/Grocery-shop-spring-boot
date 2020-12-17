@@ -1,5 +1,8 @@
 package com.kishore.util;
+import com.kishore.dao.BlackListedTokensRepository;
+import com.kishore.model.BlackListedTokens;
 import io.jsonwebtoken.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.*;
 
@@ -10,6 +13,9 @@ import java.util.function.Function;
 public class JwtUtil {
 
     private String secret = "kishore";
+
+    @Autowired
+    private BlackListedTokensRepository blackListedTokensRepository;
 
     public String extractUserName(String token) {
         return extractClaim(token, Claims::getSubject);
@@ -32,7 +38,6 @@ public class JwtUtil {
     }
 
     public String generateToken(String userName) {
-        System.out.println(userName);
         Map<String, Object> claims = new HashMap<>();
         return createToken(claims, userName);
     }
@@ -44,8 +49,15 @@ public class JwtUtil {
                 .signWith(SignatureAlgorithm.HS256, secret).compact();
     }
 
-    public Boolean validateToken(String token, UserDetails userDetails) {
-        final String userName = extractUserName(token);
-        return (userName.equals(userDetails.getUsername()) && !isTokenExpired(token));
+    public Boolean validateToken(String token, UserDetails userDetails) throws Exception {
+   BlackListedTokens blackListedTokens =   blackListedTokensRepository.findByToken(token);
+        if(blackListedTokens == null) {
+            final String userName = extractUserName(token);
+            return (userName.equals(userDetails.getUsername()) && !isTokenExpired(token));
+        }
+        else
+        {
+            throw new Exception("You need to sign in or sign up");
+        }
     }
 }

@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.*;
 import org.springframework.web.bind.annotation.*;
+
 import javax.validation.Valid;
 import java.util.*;
 
@@ -53,9 +54,7 @@ public class UserController {
             myUserDetailsService.save(user);
             run(user);
             return_message.put("message", "User created successfully");
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             return_message.put("errors", e.getMessage());
         }
         return return_message;
@@ -80,14 +79,12 @@ public class UserController {
     }
 
     @GetMapping("/users")
-    public List<User> users()
-    {
+    public List<User> users() {
         return userRepository.findAll();
     }
 
     @DeleteMapping("/user/{id}")
-    public HashMap<String, String> deleteUser(@PathVariable int id)
-    {
+    public HashMap<String, String> deleteUser(@PathVariable int id) {
         userRepository.deleteById(id);
         HashMap<String, String> delete_message = new HashMap<String, String>();
         delete_message.put("message", "User Deleted Successfully");
@@ -114,25 +111,25 @@ public class UserController {
     }
 
     @PostMapping("/user/logout")
-    public HashMap<String, String> userLogout(@RequestHeader (name="Authorization") String token)
-    {
+    public HashMap<String, String> userLogout(@RequestHeader(name = "Authorization") String token, @RequestParam("username") String userName) {
         String[] jwt_token = token.split(" ");
+        User user = userRepository.findByUserName(userName);
         BlackListedTokens blackListedToken = blackListedTokensRepository.findByToken(jwt_token[1]);
-        if(blackListedToken == null) {
+        if (blackListedToken == null) {
             BlackListedTokens blackListed = new BlackListedTokens();
             blackListed.setToken(jwt_token[1]);
+            blackListed.setUser(user);
             blackListedTokensRepository.save(blackListed);
         }
         HashMap<String, String> logout_message = new HashMap<String, String>();
         logout_message.put("message", "User logged Successfully");
-        return  logout_message;
+        return logout_message;
     }
 
     @PostMapping("/user/forgot_password")
-    public HashMap<String, String> forgot_password()
-    {
+    public HashMap<String, String> forgot_password() {
         HashMap<String, String> forgot_password_message = new HashMap<String, String>();
         forgot_password_message.put("message", "Reset token sent Successfully");
-        return  forgot_password_message;
+        return forgot_password_message;
     }
 }

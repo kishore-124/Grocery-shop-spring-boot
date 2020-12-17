@@ -25,13 +25,11 @@ public class MyUserDetailsService implements UserDetailsService {
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    public User getUser(int id)
-    {
-        return   userRepository.findById(id).orElse(null);
+    public User getUser(int id) {
+        return userRepository.findById(id).orElse(null);
     }
 
-    public void save(User user)
-    {
+    public void save(User user) {
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         user.setCreate_at(new Date());
         user.setUpdated_at(new Date());
@@ -44,8 +42,8 @@ public class MyUserDetailsService implements UserDetailsService {
         User user = userRepository.findByUserName(userName);
 
 
-        Set < GrantedAuthority > grantedAuthorities = new HashSet <GrantedAuthority > ();
-            grantedAuthorities.add(new SimpleGrantedAuthority(user.getRole().getName()));
+        Set<GrantedAuthority> grantedAuthorities = new HashSet<GrantedAuthority>();
+        grantedAuthorities.add(new SimpleGrantedAuthority(user.getRole().getName()));
         return new org.springframework.security.core.userdetails.User(user.getUserName(), user.getPassword(),
                 grantedAuthorities);
     }

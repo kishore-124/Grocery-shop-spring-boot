@@ -2,8 +2,7 @@ package com.kishore.model;
 
 public class ErrorDetails {
 
-    public ErrorDetails()
-    {
+    public ErrorDetails() {
 
     }
 

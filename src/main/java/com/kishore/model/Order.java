@@ -14,8 +14,7 @@ public class Order {
 
     private Date delivery_date_time;
 
-    public Order()
-    {
+    public Order() {
 
     }
 

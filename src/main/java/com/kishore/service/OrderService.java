@@ -14,31 +14,26 @@ public class OrderService {
     @Autowired
     public OrderRepository orderRepository;
 
-    public void saveOrder(Order order)
-    {
+    public void saveOrder(Order order) {
         order.setCreated_at(new Date());
         order.setUpdated_at(new Date());
         orderRepository.save(order);
     }
 
-    public List<Order> listOrder()
-    {
-        return   orderRepository.findAll();
+    public List<Order> listOrder() {
+        return orderRepository.findAll();
     }
 
-    public void deleteOrder(int id)
-    {
+    public void deleteOrder(int id) {
         orderRepository.deleteById(id);
     }
 
-    public Order getOrder(int id)
-    {
-        return   orderRepository.findById(id).orElse(null);
+    public Order getOrder(int id) {
+        return orderRepository.findById(id).orElse(null);
     }
 
-    public Order updateOrder(Order order, int id)
-    {
-        Order exists =   orderRepository.findById(id).orElse(null);
+    public Order updateOrder(Order order, int id) {
+        Order exists = orderRepository.findById(id).orElse(null);
         exists.setAmount(order.getAmount());
         exists.setDelivery_date_time(order.getDelivery_date_time());
         exists.setDelivery_mode(order.getDelivery_mode());
@@ -47,6 +42,6 @@ public class OrderService {
         exists.setOrder_no(order.getOrder_no());
         exists.setOrder_date(order.getOrder_date());
         exists.setUpdated_at(new Date());
-        return  orderRepository.save(exists);
+        return orderRepository.save(exists);
     }
 }

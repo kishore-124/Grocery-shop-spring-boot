@@ -13,9 +13,8 @@ public class WalletController {
     private WalletService walletService;
 
     @PutMapping("/wallet")
-    public String wallet(@RequestBody Wallet wallet)
-    {
-         walletService.updateWallet(wallet);
+    public String wallet(@RequestBody Wallet wallet) {
+        walletService.updateWallet(wallet);
         return "Wallet amount entered successfully";
     }
 }

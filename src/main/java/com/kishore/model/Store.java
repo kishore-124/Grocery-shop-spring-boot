@@ -8,8 +8,7 @@ import javax.persistence.*;
 @Entity
 public class Store {
 
-    public Store()
-    {
+    public Store() {
 
     }
 

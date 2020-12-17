@@ -10,8 +10,7 @@ import java.util.List;
 @Entity
 public class Product {
 
-    public Product()
-    {
+    public Product() {
 
     }
 

@@ -6,6 +6,7 @@ import com.kishore.model.*;
 
 import java.io.IOException;
 import java.util.*;
+
 import com.kishore.service.ProductService;
 import com.kishore.service.StoreService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,8 +26,8 @@ public class ProductController {
     private StoreService storeService;
 
     @PostMapping(value = "/product", consumes = {"multipart/form-data"})
-    public  String addProduct(@RequestParam("image") MultipartFile file, @RequestParam("productName") String productName, @RequestParam("quantity") int quantity, @RequestParam("price") float price, @RequestParam("store_id") String store_id) throws IOException {
-       Store store = storeService.getStore(Integer.parseInt(store_id));
+    public String addProduct(@RequestParam("image") MultipartFile file, @RequestParam("productName") String productName, @RequestParam("quantity") int quantity, @RequestParam("price") float price, @RequestParam("store_id") String store_id) throws IOException {
+        Store store = storeService.getStore(Integer.parseInt(store_id));
         Product product = new Product();
         product.setProductName(productName);
         product.setPrice(price);
@@ -40,32 +41,27 @@ public class ProductController {
     }
 
     @GetMapping("/products")
-    public List<Product> ListProduct(@Param("keyword") String keyword)
-    {
+    public List<Product> ListProduct(@Param("keyword") String keyword) {
         return productService.listProduct(keyword);
     }
 
     @GetMapping("/product/{id}")
-    public ResponseEntity<Product> FindById(@PathVariable int id) throws RecordNotFound
-    {
+    public ResponseEntity<Product> FindById(@PathVariable int id) throws RecordNotFound {
         Product product = productService.getProduct(id);
-        if(product == null)
-        {
+        if (product == null) {
             throw new RecordNotFound("Record Not Found");
         }
         return ResponseEntity.ok().body(productService.getProduct(id));
     }
 
     @PutMapping("/product/{id}")
-    public String updateProduct(@RequestBody Product product,@PathVariable int id)
-    {
-        productService.updateProduct(product,id);
+    public String updateProduct(@RequestBody Product product, @PathVariable int id) {
+        productService.updateProduct(product, id);
         return "product updated successfully";
     }
 
     @DeleteMapping("/product/{id}")
-    public String DeleteProduct(@PathVariable int id)
-    {
+    public String DeleteProduct(@PathVariable int id) {
         productService.deleteProduct(id);
         return "product deleted successfully";
     }

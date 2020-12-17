@@ -14,23 +14,20 @@ public class StoreService {
     @Autowired
     private StoreRepository storeRepository;
 
-    public void deleteStore(int id)
-    {
+    public void deleteStore(int id) {
         storeRepository.deleteById(id);
     }
 
-    public Store getStore(int id)
-    {
-        return   storeRepository.findById(id).orElse(null);
+    public Store getStore(int id) {
+        return storeRepository.findById(id).orElse(null);
     }
 
-    public Store updateStore(Store store, int id)
-    {
-        Store exists =   storeRepository.findById(id).orElse(null);
+    public Store updateStore(Store store, int id) {
+        Store exists = storeRepository.findById(id).orElse(null);
         exists.setName(store.getName());
         exists.setEmail(store.getEmail());
         exists.setContact_number(store.getContact_number());
         exists.setUpdated_at(new Date());
-        return  storeRepository.save(exists);
+        return storeRepository.save(exists);
     }
 }

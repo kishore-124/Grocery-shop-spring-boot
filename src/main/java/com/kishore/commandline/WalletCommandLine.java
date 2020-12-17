@@ -32,8 +32,7 @@ public class WalletCommandLine implements CommandLineRunner {
         }
 
         User user = userRepository.findByUserName("kishore");
-        if(user.getWallet() == null)
-        {
+        if (user.getWallet() == null) {
             Wallet wallet = walletRepository.findByTotalAmount(10.0f);
             user.setWallet(wallet);
             userRepository.save(user);

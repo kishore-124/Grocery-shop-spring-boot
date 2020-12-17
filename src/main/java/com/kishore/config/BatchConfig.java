@@ -22,7 +22,7 @@ public class BatchConfig {
     private StepBuilderFactory steps;
 
     @Bean
-    public Step stepOne(){
+    public Step stepOne() {
         return steps.get("stepOne")
                 .tasklet(new SendEmailTasklet())
                 .build();
@@ -30,7 +30,7 @@ public class BatchConfig {
 
 
     @Bean
-    public Job demoJob(){
+    public Job demoJob() {
         return jobs.get("demoJob")
                 .incrementer(new RunIdIncrementer())
                 .start(stepOne())

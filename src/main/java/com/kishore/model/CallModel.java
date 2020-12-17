@@ -4,8 +4,7 @@ public class CallModel {
 
     private String phone;
 
-    public CallModel()
-    {
+    public CallModel() {
 
     }
 

@@ -6,8 +6,7 @@ public class SmsMessage {
 
     private String content;
 
-    public SmsMessage()
-    {
+    public SmsMessage() {
 
     }
 

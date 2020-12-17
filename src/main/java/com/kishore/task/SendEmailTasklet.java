@@ -28,10 +28,10 @@ public class SendEmailTasklet implements Tasklet {
         Jedis jedis = new Jedis();
         jedis.rpush("email", "first");
 
-    String userName = chunkContext.getStepContext().getStepExecution().getJobParameters().getString("userName");
+        String userName = chunkContext.getStepContext().getStepExecution().getJobParameters().getString("userName");
         String email = chunkContext.getStepContext().getStepExecution().getJobParameters().getString("email");
         Email from = new Email("gopalakrishnankishore510@gmail.com");
-        String subject = "Welcome"+ userName;
+        String subject = "Welcome" + userName;
         Email to = new Email(email);
         Content content = new Content("text/html", default_email_template(userName));
         Mail mail = new Mail(from, subject, to, content);
@@ -49,9 +49,8 @@ public class SendEmailTasklet implements Tasklet {
         return RepeatStatus.FINISHED;
     }
 
-    public String default_email_template(String username)
-    {
-        String html_content = "<html><body>Hi "+ username + "<br>Your are just joined our online shop, we will provide you a best shopping experience.</body></html>";
+    public String default_email_template(String username) {
+        String html_content = "<html><body>Hi " + username + "<br>Your are just joined our online shop, we will provide you a best shopping experience.</body></html>";
         return html_content;
     }
 }

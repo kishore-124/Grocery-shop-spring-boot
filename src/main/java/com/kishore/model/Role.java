@@ -12,8 +12,7 @@ public class Role {
         return id;
     }
 
-    public Role()
-    {
+    public Role() {
 
     }
 

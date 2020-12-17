@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
+
 import java.util.*;
 
 @Component
@@ -30,21 +31,20 @@ public class UserCommandLine implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-     User user_check = userRepository.findByUserName("kishore");
-     if(user_check == null)
-     {
-         Role role = roleRepository.findByName("Admin");
-         User user = new User();
-         user.setUserName("kishore");
-         user.setPassword(bCryptPasswordEncoder.encode("9047446861"));
-         user.setEmail("kishorekce124@gmail.com");
-         user.setPhone_number("7010950016");
-         user.setCreate_at(new Date());
-         user.setUpdated_at(new Date());
-         user.setRole(role);
-         userRepository.save(user);
-         run(user);
-     }
+        User user_check = userRepository.findByUserName("kishore");
+        if (user_check == null) {
+            Role role = roleRepository.findByName("Admin");
+            User user = new User();
+            user.setUserName("kishore");
+            user.setPassword(bCryptPasswordEncoder.encode("9047446861"));
+            user.setEmail("kishorekce124@gmail.com");
+            user.setPhone_number("7010950016");
+            user.setCreate_at(new Date());
+            user.setUpdated_at(new Date());
+            user.setRole(role);
+            userRepository.save(user);
+            run(user);
+        }
     }
 
     // for runing batch job for user registration

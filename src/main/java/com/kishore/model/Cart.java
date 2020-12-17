@@ -4,7 +4,6 @@ import javax.persistence.*;
 import java.util.*;
 
 
-
 @Entity
 public class Cart {
 

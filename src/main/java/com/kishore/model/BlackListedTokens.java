@@ -1,18 +1,21 @@
 package com.kishore.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 public class BlackListedTokens {
 
-    public BlackListedTokens()
-    {
+    public BlackListedTokens() {
 
     }
 
-    public BlackListedTokens(int id, String token) {
+    public BlackListedTokens(int id, String token, User user) {
         this.id = id;
         this.token = token;
+        this.user = user;
     }
 
     @Id
@@ -35,5 +38,17 @@ public class BlackListedTokens {
         this.token = token;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     private String token;
+
+    @JsonIgnore
+    @OneToOne
+    private User user;
 }

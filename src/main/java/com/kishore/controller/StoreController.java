@@ -21,7 +21,7 @@ public class StoreController {
     private StoreService storeService;
 
     @PostMapping(value = "/store")
-    public  String addStore(@RequestBody Store store) {
+    public String addStore(@RequestBody Store store) {
         store.setCreated_at(new Date());
         store.setUpdated_at(new Date());
         storeRepository.save(store);
@@ -29,18 +29,15 @@ public class StoreController {
     }
 
     @GetMapping("/stores")
-    public List<Store> ListStore()
-    {
+    public List<Store> ListStore() {
         return storeRepository.findAll();
     }
 
     @GetMapping("/store/{id}")
-    public ResponseEntity<Store> FindById(@PathVariable int id) throws RecordNotFound
-    {
+    public ResponseEntity<Store> FindById(@PathVariable int id) throws RecordNotFound {
         Store store = storeService.getStore(id);
 
-        if(store == null)
-        {
+        if (store == null) {
             throw new RecordNotFound("Record Not Found");
         }
 
@@ -48,15 +45,13 @@ public class StoreController {
     }
 
     @PutMapping("/store/{id}")
-    public String updateStore(@RequestBody Store store,@PathVariable int id)
-    {
+    public String updateStore(@RequestBody Store store, @PathVariable int id) {
         storeService.updateStore(store, id);
         return "store updated successfully";
     }
 
     @DeleteMapping("/store/{id}")
-    public String DeleteStore(@PathVariable int id)
-    {
+    public String DeleteStore(@PathVariable int id) {
         storeService.deleteStore(id);
         return "store deleted successfully";
     }

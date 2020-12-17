@@ -1,6 +1,8 @@
 package com.kishore.util;
+
 import com.kishore.dao.BlackListedTokensRepository;
 import com.kishore.model.BlackListedTokens;
+import com.kishore.model.User;
 import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -29,6 +31,7 @@ public class JwtUtil {
         final Claims claims = extractAllClaims(token);
         return claimsResolver.apply(claims);
     }
+
     private Claims extractAllClaims(String token) {
         return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
     }
@@ -50,13 +53,11 @@ public class JwtUtil {
     }
 
     public Boolean validateToken(String token, UserDetails userDetails) throws Exception {
-   BlackListedTokens blackListedTokens =   blackListedTokensRepository.findByToken(token);
-        if(blackListedTokens == null) {
+        BlackListedTokens blackListedTokens = blackListedTokensRepository.findByToken(token);
+        if (blackListedTokens == null) {
             final String userName = extractUserName(token);
             return (userName.equals(userDetails.getUsername()) && !isTokenExpired(token));
-        }
-        else
-        {
+        } else {
             throw new Exception("You need to sign in or sign up");
         }
     }

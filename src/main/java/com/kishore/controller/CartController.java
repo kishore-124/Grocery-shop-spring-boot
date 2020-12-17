@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
 import java.util.*;
 
 
@@ -24,8 +25,7 @@ public class CartController {
     private UserRepository userRepository;
 
     @PostMapping("/addcart")
-    public String addCart(@RequestParam("quantity") String quantity, @RequestParam("id") String id, @RequestParam("username") String username )
-    {
+    public String addCart(@RequestParam("quantity") String quantity, @RequestParam("id") String id, @RequestParam("username") String username) {
         Product product = productService.getProduct(Integer.parseInt(id));
         product.setQuantity(product.getQuantity() - Integer.parseInt(quantity));
         product.setUpdated_at(new Date());

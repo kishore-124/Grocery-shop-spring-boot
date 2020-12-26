@@ -1,9 +1,11 @@
 package com.kishore.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.sun.istack.NotNull;
 
 import java.util.*;
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 
 @Entity
 public class Store {
@@ -48,10 +50,14 @@ public class Store {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
+    @NotNull
     private String name;
 
+    @NotNull
+    @Email
     private String email;
 
+    @NotNull
     private String contact_number;
 
     public Store(int id, String name, String email, String contact_number, List<Product> products, Date created_at, Date updated_at) {

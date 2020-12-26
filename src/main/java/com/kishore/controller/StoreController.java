@@ -7,9 +7,8 @@ import com.kishore.service.StoreService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Date;
-import java.util.List;
+import javax.validation.Valid;
+import java.util.*;
 
 @RestController
 public class StoreController {
@@ -21,11 +20,13 @@ public class StoreController {
     private StoreService storeService;
 
     @PostMapping(value = "/store")
-    public String addStore(@RequestBody Store store) {
+    public HashMap<String, String> addStore(@Valid @RequestBody Store store) {
         store.setCreated_at(new Date());
         store.setUpdated_at(new Date());
         storeRepository.save(store);
-        return "store successfully added";
+        HashMap<String, String> return_message = new HashMap<String, String>();
+        return_message.put("message", "Store created Successfully");
+        return return_message;
     }
 
     @GetMapping("/stores")
@@ -45,14 +46,18 @@ public class StoreController {
     }
 
     @PutMapping("/store/{id}")
-    public String updateStore(@RequestBody Store store, @PathVariable int id) {
+    public HashMap<String, String> updateStore(@RequestBody Store store, @PathVariable int id) {
         storeService.updateStore(store, id);
-        return "store updated successfully";
+        HashMap<String, String> return_message = new HashMap<String, String>();
+        return_message.put("message", "Store updated successfully.");
+        return return_message;
     }
 
     @DeleteMapping("/store/{id}")
-    public String DeleteStore(@PathVariable int id) {
+    public HashMap<String, String> DeleteStore(@PathVariable int id) {
         storeService.deleteStore(id);
-        return "store deleted successfully";
+        HashMap<String, String> return_message = new HashMap<String, String>();
+        return_message.put("message", "Store deleted successfully.");
+        return return_message;
     }
 }

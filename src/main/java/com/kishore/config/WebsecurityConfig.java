@@ -52,8 +52,8 @@ public class WebsecurityConfig extends WebSecurityConfigurerAdapter implements W
     protected void configure(HttpSecurity http) throws Exception {
         http.httpBasic();
         http
-                .cors().and().csrf().disable().formLogin().disable()
-                .authorizeRequests().antMatchers("/user/login", "/register", "/products").permitAll()
+                .cors().and().csrf().disable().formLogin().and().httpBasic().disable()
+                .authorizeRequests().antMatchers("/user/login", "/register", "/products", "/chat/**", "/app/hello").permitAll()
                 .anyRequest().authenticated();
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
     }

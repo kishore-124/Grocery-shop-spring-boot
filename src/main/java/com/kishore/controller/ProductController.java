@@ -26,7 +26,7 @@ public class ProductController {
     private StoreService storeService;
 
     @PostMapping(value = "/product", consumes = {"multipart/form-data"})
-    public String addProduct(@RequestParam("image") MultipartFile file, @RequestParam("productName") String productName, @RequestParam("quantity") int quantity, @RequestParam("price") float price, @RequestParam("store_id") String store_id) throws IOException {
+    public HashMap<String, String> addProduct(@RequestParam("image") MultipartFile file, @RequestParam("productName") String productName, @RequestParam("quantity") int quantity, @RequestParam("price") float price, @RequestParam("store_id") String store_id) throws IOException {
         Store store = storeService.getStore(Integer.parseInt(store_id));
         Product product = new Product();
         product.setProductName(productName);
@@ -37,7 +37,10 @@ public class ProductController {
         product.setUpdated_at(new Date());
         product.setStore(store);
         productService.saveProduct(product);
-        return "Product successfully added";
+
+        HashMap<String, String> return_message = new HashMap<String, String>();
+        return_message.put("message", "Product created successfully.");
+        return return_message;
     }
 
     @GetMapping("/products")
@@ -55,14 +58,18 @@ public class ProductController {
     }
 
     @PutMapping("/product/{id}")
-    public String updateProduct(@RequestBody Product product, @PathVariable int id) {
+    public HashMap<String, String> updateProduct(@RequestBody Product product, @PathVariable int id) {
         productService.updateProduct(product, id);
-        return "product updated successfully";
+        HashMap<String, String> return_message = new HashMap<String, String>();
+        return_message.put("message", "Product updated successfully.");
+        return return_message;
     }
 
     @DeleteMapping("/product/{id}")
-    public String DeleteProduct(@PathVariable int id) {
+    public HashMap<String, String> DeleteProduct(@PathVariable int id) {
         productService.deleteProduct(id);
-        return "product deleted successfully";
+        HashMap<String, String> return_message = new HashMap<String, String>();
+        return_message.put("message", "Product deleted successfully.");
+        return return_message;
     }
 }

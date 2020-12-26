@@ -6,6 +6,8 @@ import com.kishore.service.WalletService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+
 @RestController
 public class WalletController {
 
@@ -13,8 +15,10 @@ public class WalletController {
     private WalletService walletService;
 
     @PutMapping("/wallet")
-    public String wallet(@RequestBody Wallet wallet) {
+    public HashMap<String, String> wallet(@RequestBody Wallet wallet) {
         walletService.updateWallet(wallet);
-        return "Wallet amount entered successfully";
+        HashMap<String, String> return_message = new HashMap<String, String>();
+        return_message.put("message", "Wallet amount entered successfully");
+        return return_message;
     }
 }

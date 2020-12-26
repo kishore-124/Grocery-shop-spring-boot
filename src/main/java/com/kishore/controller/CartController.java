@@ -25,7 +25,7 @@ public class CartController {
     private UserRepository userRepository;
 
     @PostMapping("/addcart")
-    public String addCart(@RequestParam("quantity") String quantity, @RequestParam("id") String id, @RequestParam("username") String username) {
+    public HashMap<String, String> addCart(@RequestParam("quantity") String quantity, @RequestParam("id") String id, @RequestParam("username") String username) {
         Product product = productService.getProduct(Integer.parseInt(id));
         product.setQuantity(product.getQuantity() - Integer.parseInt(quantity));
         product.setUpdated_at(new Date());
@@ -40,6 +40,8 @@ public class CartController {
 
         userRepository.save(user);
 
-        return "Item added successfully";
+        HashMap<String, String> return_message = new HashMap<String, String>();
+        return_message.put("message", "Item added successfully");
+        return return_message;
     }
 }

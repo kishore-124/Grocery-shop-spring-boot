@@ -33,10 +33,8 @@ public class CartController {
         User user = userRepository.findByUserName(username);
 
         Cart cart = new Cart();
-        cart.setProduct(product);
         cart.setCart_quantity(Integer.parseInt(quantity));
         cartRepository.save(cart);
-        user.setCart(cart);
 
         userRepository.save(user);
 

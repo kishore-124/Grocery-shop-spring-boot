@@ -1,11 +1,20 @@
 branch-defaults:
   master:
     environment: null
-    group_suffix: null
+  n:
+    environment: GroceryShop-env
+  y:
+    environment: null
+deploy:
+  artifact: target/spring-boot-security-0.0.1-SNAPSHOT.war
+environment-defaults:
+  GroceryShop-env:
+    branch: null
+    repository: null
 global:
   application_name: Grocery-shop
-  branch: null
-  default_ec2_keyname: null
+  branch: y
+  default_ec2_keyname: groceryshop
   default_platform: Java 8 running on 64bit Amazon Linux
   default_region: eu-west-3
   include_git_submodules: true
@@ -13,6 +22,6 @@ global:
   platform_name: null
   platform_version: null
   profile: null
-  repository: null
+  repository: us-east-2
   sc: git
   workspace_type: Application

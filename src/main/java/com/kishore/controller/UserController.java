@@ -13,6 +13,7 @@ import org.springframework.security.authentication.*;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @RestController
@@ -58,15 +59,6 @@ public class UserController {
             return_message.put("errors", e.getMessage());
         }
         return return_message;
-    }
-
-    // for runing batch job for user registration
-    public void run(User user) throws Exception {
-        JobParameters params = new JobParametersBuilder()
-                .addString("JobID", String.valueOf(System.currentTimeMillis()))
-                .addString("userName", user.getUserName()).addString("email", user.getEmail())
-                .toJobParameters();
-        jobLauncher.run(job, params);
     }
 
     @GetMapping("/user")
@@ -127,9 +119,22 @@ public class UserController {
     }
 
     @PostMapping("/user/forgot_password")
-    public HashMap<String, String> forgot_password() {
+    public HashMap<String, String> forgot_password(@RequestParam("username") String username) throws Exception {
+        User user = userRepository.findByUserName(username);
+        user.setReset_password_token(UUID.randomUUID().toString());
+        userRepository.save(user);
+        run(user);
         HashMap<String, String> forgot_password_message = new HashMap<String, String>();
         forgot_password_message.put("message", "Reset token sent Successfully");
         return forgot_password_message;
+    }
+
+    // for runing batch job
+    public void run(User user) throws Exception {
+        JobParameters params = new JobParametersBuilder()
+                .addString("JobID", String.valueOf(System.currentTimeMillis()))
+                .addString("userName", user.getUserName()).addString("email", user.getEmail()).addString("reset_token", user.getReset_password_token())
+                .toJobParameters();
+        jobLauncher.run(job, params);
     }
 }

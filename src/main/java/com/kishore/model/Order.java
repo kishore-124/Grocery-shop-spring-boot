@@ -18,8 +18,7 @@ public class Order {
 
     }
 
-
-    public Order(int id, Date delivery_date_time, String order_no, Date order_date, float amount, String status, String delivery_mode, User user, List<Product> product, Date created_at, Date updated_at) {
+    public Order(int id, Date delivery_date_time, String order_no, Date order_date, float amount, String status, String delivery_mode, User user, Date created_at, Date updated_at) {
         this.id = id;
         this.delivery_date_time = delivery_date_time;
         this.order_no = order_no;
@@ -28,7 +27,6 @@ public class Order {
         this.status = status;
         this.delivery_mode = delivery_mode;
         this.user = user;
-        this.product = product;
         this.created_at = created_at;
         this.updated_at = updated_at;
     }
@@ -111,18 +109,6 @@ public class Order {
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private User user;
-
-    public List<Product> getProduct() {
-        return product;
-    }
-
-    public void setProduct(List<Product> product) {
-        this.product = product;
-    }
-
-    @JsonIgnore
-    @ManyToMany(mappedBy = "order")
-    private List<Product> product = new ArrayList<Product>();
 
     public Date getCreated_at() {
         return created_at;

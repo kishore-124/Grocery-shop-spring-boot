@@ -20,8 +20,8 @@ public class Cart {
     private int id;
 
 
-    @OneToOne
-    private Product product;
+    @ManyToOne
+    private User user;
 
     public int getId() {
         return id;
@@ -35,9 +35,9 @@ public class Cart {
         return created_at;
     }
 
-    public Cart(int id, Product product, int cart_quantity, Date created_at, Date updated_at) {
+    public Cart(int id, User user, int cart_quantity, Date created_at, Date updated_at) {
         this.id = id;
-        this.product = product;
+        this.user = user;
         this.cart_quantity = cart_quantity;
         this.created_at = created_at;
         this.updated_at = updated_at;
@@ -55,12 +55,12 @@ public class Cart {
         this.updated_at = updated_at;
     }
 
-    public Product getProduct() {
-        return product;
+    public User getUser() {
+        return user;
     }
 
-    public void setProduct(Product product) {
-        this.product = product;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public int getCart_quantity() {

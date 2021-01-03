@@ -30,14 +30,23 @@ public class SendEmailTasklet implements Tasklet {
 
         String userName = chunkContext.getStepContext().getStepExecution().getJobParameters().getString("userName");
         String email = chunkContext.getStepContext().getStepExecution().getJobParameters().getString("email");
+        String reset_token = chunkContext.getStepContext().getStepExecution().getJobParameters().getString("reset_token");
         Email from = new Email("gopalakrishnankishore510@gmail.com");
-        String subject = "Welcome" + userName;
-        Email to = new Email(email);
-        Content content = new Content("text/html", default_email_template(userName));
-        Mail mail = new Mail(from, subject, to, content);
         SendGrid sg = new SendGrid("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");
+        String subject = "";
+        Email to = new Email(email);
+        Content content = new Content();
+        if (reset_token.length() > 0) {
+            subject = "Reset your password";
+            content.setType("text/html");
+            content.setValue(get_forgot_password_template(reset_token ,userName));
+        } else {
+            subject = "Welcome" + userName;
+            content.setType("text/html");
+            content.setValue(get_registration_email_template(userName));
+        }
+        Mail mail = new Mail(from, subject, to, content);
         Request request = new Request();
-
         try {
             request.setMethod(Method.POST);
             request.setEndpoint("mail/send");
@@ -49,8 +58,14 @@ public class SendEmailTasklet implements Tasklet {
         return RepeatStatus.FINISHED;
     }
 
-    public String default_email_template(String username) {
+    public String get_registration_email_template(String username) {
         String html_content = "<html><body>Hi " + username + "<br>Your are just joined our online shop, we will provide you a best shopping experience.</body></html>";
+        return html_content;
+    }
+
+    public String get_forgot_password_template(String reset_token, String username) {
+        String url =  "http://localhost:5000/reset_password?token=" + reset_token;
+        String html_content = "<html><body>Hi " + username + "<br>"+ "Please click the link to reset password"+ url +"</body></html>";
         return html_content;
     }
 }

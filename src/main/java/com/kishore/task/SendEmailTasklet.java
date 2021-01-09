@@ -64,8 +64,7 @@ public class SendEmailTasklet implements Tasklet {
     }
 
     public String get_forgot_password_template(String reset_token, String username) {
-        String url =  "http://localhost:5000/reset_password?token=" + reset_token;
-        String html_content = "<html><body>Hi " + username + "<br>"+ "Please click the link to reset password"+ url +"</body></html>";
+        String html_content = "<html><body>Hi " + username + "<br>"+ "Please click the link to reset password" + "  " + "<a href=http://localhost:5000/reset_password?token="+ reset_token+">Click here</a>" +"</body></html>";
         return html_content;
     }
 }

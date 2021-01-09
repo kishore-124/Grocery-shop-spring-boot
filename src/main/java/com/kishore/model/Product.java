@@ -34,8 +34,7 @@ public class Product {
         return productName;
     }
 
-
-    public Product(int id, String productName, float price, int quantity, Date created_at, Date updated_at, byte[] image, List<Order> order, Store store) {
+    public Product(int id, String productName, float price, int quantity, Date created_at, Date updated_at, byte[] image, List<Order> order, Cart cart, Store store) {
         this.id = id;
         this.productName = productName;
         this.price = price;
@@ -44,6 +43,7 @@ public class Product {
         this.updated_at = updated_at;
         this.image = image;
         this.order = order;
+        this.cart = cart;
         this.store = store;
     }
 
@@ -91,6 +91,14 @@ public class Product {
         this.image = image;
     }
 
+    public Cart getCart() {
+        return cart;
+    }
+
+    public void setCart(Cart cart) {
+        this.cart = cart;
+    }
+
     private int quantity;
 
     private Date created_at;
@@ -118,6 +126,10 @@ public class Product {
     public void setStore(Store store) {
         this.store = store;
     }
+
+    @JsonIgnore
+    @ManyToOne
+    private Cart cart;
 
     @JsonIgnore
     @ManyToOne

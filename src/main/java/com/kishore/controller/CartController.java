@@ -5,6 +5,7 @@ import com.kishore.dao.UserRepository;
 import com.kishore.model.*;
 import com.kishore.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,7 +25,7 @@ public class CartController {
     @Autowired
     private UserRepository userRepository;
 
-    @PostMapping("/addcart")
+    @PostMapping("/cart")
     public HashMap<String, String> addCart(@RequestParam("quantity") String quantity, @RequestParam("id") String id, @RequestParam("username") String username) {
         Product product = productService.getProduct(Integer.parseInt(id));
         product.setQuantity(product.getQuantity() - Integer.parseInt(quantity));
@@ -33,7 +34,8 @@ public class CartController {
         User user = userRepository.findByUserName(username);
 
         Cart cart = new Cart();
-        cart.setCart_quantity(Integer.parseInt(quantity));
+        cart.setProducts((List<Product>) product);
+        cart.setUsers((List<User>) user);
         cartRepository.save(cart);
 
         userRepository.save(user);
@@ -41,5 +43,18 @@ public class CartController {
         HashMap<String, String> return_message = new HashMap<String, String>();
         return_message.put("message", "Item added successfully");
         return return_message;
+    }
+
+    @GetMapping("/cart/products")
+    public List<Product> listProduct(@RequestParam("username") String username)
+    {
+        User user = userRepository.findByUserName(username);
+        List<Product> productList = new ArrayList<Product>();
+//        for(Cart cart: user.getCart())
+//        {
+//            System.out.println(cart);
+//          productList.add(cart.getProduct());
+//        }
+        return productList;
     }
 }

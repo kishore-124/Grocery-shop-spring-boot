@@ -1,5 +1,7 @@
 package com.kishore.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.*;
 
@@ -19,9 +21,21 @@ public class Cart {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
+    @JsonIgnore
+    @OneToMany
+    private List<User> users = new ArrayList<User>();
 
-    @ManyToOne
-    private User user;
+    @JsonIgnore
+    @OneToMany
+   private List<Product> products = new ArrayList<Product>();
+
+    public List<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<User> users) {
+        this.users = users;
+    }
 
     public int getId() {
         return id;
@@ -35,9 +49,10 @@ public class Cart {
         return created_at;
     }
 
-    public Cart(int id, User user, int cart_quantity, Date created_at, Date updated_at) {
+    public Cart(int id, List<User> users, List<Product> products, int cart_quantity, Date created_at, Date updated_at) {
         this.id = id;
-        this.user = user;
+        this.users = users;
+        this.products = products;
         this.cart_quantity = cart_quantity;
         this.created_at = created_at;
         this.updated_at = updated_at;
@@ -55,12 +70,12 @@ public class Cart {
         this.updated_at = updated_at;
     }
 
-    public User getUser() {
-        return user;
+    public List<Product> getProducts() {
+        return products;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setProducts(List<Product> products) {
+        this.products = products;
     }
 
     public int getCart_quantity() {

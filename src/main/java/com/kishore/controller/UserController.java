@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.*;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
 import java.time.LocalDateTime;
@@ -128,6 +129,7 @@ public class UserController {
         forgot_password_message.put("message", "Reset token sent Successfully");
         return forgot_password_message;
     }
+
 
     // for runing batch job
     public void run(User user) throws Exception {

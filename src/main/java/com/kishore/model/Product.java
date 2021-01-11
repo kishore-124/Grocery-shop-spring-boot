@@ -1,6 +1,8 @@
 package com.kishore.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -34,7 +36,7 @@ public class Product {
         return productName;
     }
 
-    public Product(int id, String productName, float price, int quantity, Date created_at, Date updated_at, byte[] image, List<Order> order, Cart cart, Store store) {
+    public Product(int id, String productName, float price, int quantity, Date created_at, Date updated_at, byte[] image, List<Order> order, List<Cart> carts, Store store, List<Order> orders) {
         this.id = id;
         this.productName = productName;
         this.price = price;
@@ -43,8 +45,9 @@ public class Product {
         this.updated_at = updated_at;
         this.image = image;
         this.order = order;
-        this.cart = cart;
+        this.carts = carts;
         this.store = store;
+        this.orders = orders;
     }
 
     public void setProductName(String productName) {
@@ -91,12 +94,12 @@ public class Product {
         this.image = image;
     }
 
-    public Cart getCart() {
-        return cart;
+    public List<Cart> getCarts() {
+        return carts;
     }
 
-    public void setCart(Cart cart) {
-        this.cart = cart;
+    public void setCarts(List<Cart> carts) {
+        this.carts = carts;
     }
 
     private int quantity;
@@ -128,11 +131,23 @@ public class Product {
     }
 
     @JsonIgnore
-    @ManyToOne
-    private Cart cart;
+    @OneToMany(mappedBy = "product", fetch = FetchType.EAGER)
+    @Fetch(value = FetchMode.SUBSELECT)
+    private List<Cart> carts = new ArrayList<Cart>();
 
     @JsonIgnore
     @ManyToOne
     private Store store;
 
+    public List<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
+    }
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "product", fetch = FetchType.EAGER)
+    private List<Order> orders = new ArrayList<Order>();
 }

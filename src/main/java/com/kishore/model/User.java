@@ -2,6 +2,8 @@ package com.kishore.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.NotNull;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.io.IOException;
@@ -48,7 +50,7 @@ public class User extends InputStream {
         return 0;
     }
 
-    public User(Wallet wallet, Role role, Date create_at, Date updated_at, int id, String email, String userName, String password, String phone_number, List<Order> orders, List<Address> addresses, Cart cart, String reset_password_token) {
+    public User(Wallet wallet, Role role, Date create_at, Date updated_at, int id, String email, String userName, String password, String phone_number, List<Order> orders, List<Address> addresses, List<Cart> carts, String reset_password_token) {
         this.wallet = wallet;
         this.role = role;
         Create_at = create_at;
@@ -60,7 +62,7 @@ public class User extends InputStream {
         this.phone_number = phone_number;
         this.orders = orders;
         this.addresses = addresses;
-        this.cart = cart;
+        this.carts = carts;
         this.reset_password_token = reset_password_token;
     }
 
@@ -133,12 +135,12 @@ public class User extends InputStream {
     @Column(unique = true)
     private String phone_number;
 
-    public Cart getCart() {
-        return cart;
+    public List<Cart> getCarts() {
+        return carts;
     }
 
-    public void setCart(Cart cart) {
-        this.cart = cart;
+    public void setCarts(List<Cart> carts) {
+        this.carts = carts;
     }
 
     public Date getCreate_at() {
@@ -158,7 +160,8 @@ public class User extends InputStream {
     }
 
     @JsonIgnore
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    @Fetch(value = FetchMode.SUBSELECT)
     private List<Order> orders;
 
     public List<Address> getAddresses() {
@@ -170,11 +173,14 @@ public class User extends InputStream {
     }
 
     @JsonIgnore
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    @Fetch(value = FetchMode.SUBSELECT)
     private List<Address> addresses;
 
-    @ManyToOne
-    private Cart cart;
+    @JsonIgnore
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    @Fetch(value = FetchMode.SUBSELECT)
+    private List<Cart> carts = new ArrayList<Cart>();
 
     public String getReset_password_token() {
         return reset_password_token;

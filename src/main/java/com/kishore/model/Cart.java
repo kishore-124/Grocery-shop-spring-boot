@@ -22,19 +22,19 @@ public class Cart {
     private int id;
 
     @JsonIgnore
-    @OneToMany
-    private List<User> users = new ArrayList<User>();
+    @ManyToOne
+    private User user;
 
     @JsonIgnore
-    @OneToMany
-   private List<Product> products = new ArrayList<Product>();
+    @ManyToOne
+    private Product product;
 
-    public List<User> getUsers() {
-        return users;
+    public User getUser() {
+        return user;
     }
 
-    public void setUsers(List<User> users) {
-        this.users = users;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public int getId() {
@@ -49,10 +49,10 @@ public class Cart {
         return created_at;
     }
 
-    public Cart(int id, List<User> users, List<Product> products, int cart_quantity, Date created_at, Date updated_at) {
+    public Cart(int id, User user, Product product, int cart_quantity, Date created_at, Date updated_at) {
         this.id = id;
-        this.users = users;
-        this.products = products;
+        this.user = user;
+        this.product = product;
         this.cart_quantity = cart_quantity;
         this.created_at = created_at;
         this.updated_at = updated_at;
@@ -70,12 +70,12 @@ public class Cart {
         this.updated_at = updated_at;
     }
 
-    public List<Product> getProducts() {
-        return products;
+    public Product getProduct() {
+        return product;
     }
 
-    public void setProducts(List<Product> products) {
-        this.products = products;
+    public void setProduct(Product product) {
+        this.product = product;
     }
 
     public int getCart_quantity() {

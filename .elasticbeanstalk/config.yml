@@ -2,7 +2,7 @@ branch-defaults:
   master:
     environment: null
   n:
-    environment: GroceryShop-env
+    environment: null
   y:
     environment: null
 deploy:
@@ -13,7 +13,7 @@ environment-defaults:
     repository: null
 global:
   application_name: Grocery-shop
-  branch: y
+  branch: n
   default_ec2_keyname: groceryshop
   default_platform: Java 8 running on 64bit Amazon Linux
   default_region: eu-west-3

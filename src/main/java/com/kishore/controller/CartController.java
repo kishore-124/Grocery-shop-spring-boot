@@ -5,10 +5,7 @@ import com.kishore.dao.UserRepository;
 import com.kishore.model.*;
 import com.kishore.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
@@ -34,10 +31,10 @@ public class CartController {
         User user = userRepository.findByUserName(username);
 
         Cart cart = new Cart();
-        cart.setProducts((List<Product>) product);
-        cart.setUsers((List<User>) user);
+        cart.setUser(user);
+        cart.setProduct(product);
+        cart.setCart_quantity(Integer.parseInt(quantity));
         cartRepository.save(cart);
-
         userRepository.save(user);
 
         HashMap<String, String> return_message = new HashMap<String, String>();
@@ -46,15 +43,27 @@ public class CartController {
     }
 
     @GetMapping("/cart/products")
-    public List<Product> listProduct(@RequestParam("username") String username)
-    {
+    public List<Product> listProduct(@RequestParam("username") String username) {
         User user = userRepository.findByUserName(username);
         List<Product> productList = new ArrayList<Product>();
-//        for(Cart cart: user.getCart())
-//        {
-//            System.out.println(cart);
-//          productList.add(cart.getProduct());
-//        }
+        for(Cart cart: user.getCarts())
+        {
+            productList.add(cart.getProduct());
+        }
         return productList;
+    }
+
+    @DeleteMapping("/cart/{id}")
+    public HashMap<String, String> deleteCart(@PathVariable("id") int id, @RequestParam("product_id") int product_id)
+    {
+        Cart cart = cartRepository.findById(id).orElse(null);
+        Product product = productService.getProduct(product_id);
+        product.setQuantity(product.getQuantity() + cart.getCart_quantity());
+        product.setUpdated_at(new Date());
+        productService.updateProduct(product, product_id);
+        cartRepository.deleteById(id);
+        HashMap<String, String> return_message = new HashMap<String, String>();
+        return_message.put("message", "Cart deleted Successfully");
+        return return_message;
     }
 }
